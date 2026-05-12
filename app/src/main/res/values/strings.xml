@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">Assesment 2</string>
+    <string name="nama_workout">Nama Workout</string>
+    <string name="kategori">Kategori</string>
+    <string name="durasi">Durasi</string>
+    <string name="tambah_workout">Tambah Workout</string>
+    <string name="list_kosong">Belum ada workout</string>
+    <string name="kembali">Kembali</string>
+    <string name="lainnya">Opsi lainnya</string>
+    <string name="edit_workout">Edit Workout</string>
+    <string name="hapus">Hapus Workout</string>
+    <string name="simpan">Simpan</string>
+    <string name="invalid">Nama dan kategori tidak boleh kosong.</string>
+    <string name="pesan_hapus">Hapus Jadwal ini?</string>
+    <string name="tombol_hapus">Hapus</string>
+    <string name="tombol_batal">Batal</string>
+
 </resources>

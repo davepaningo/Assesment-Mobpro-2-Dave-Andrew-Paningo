@@ -16,14 +16,18 @@ class DetailViewModel(
     fun insert(
         nama: String,
         kategori: String,
-        durasi: String
+        durasi: String,
+        tanggal: String,
+        jam: String
     ) {
         viewModelScope.launch {
             dao.insertWorkout(
                 Workout(
                     nama = nama,
                     kategori = kategori,
-                    durasi = durasi
+                    durasi = durasi,
+                    tanggal = tanggal,
+                    jam = jam
                 )
             )
         }
@@ -32,12 +36,14 @@ class DetailViewModel(
     suspend fun getWorkout(id: Long): Workout? {
         return dao.getWorkoutById(id)
     }
-    fun update(id: Long, nama: String, kategori: String, durasi: String) {
+    fun update(id: Long, nama: String, kategori: String, durasi: String, tanggal: String, jam: String) {
         val workout = Workout(
             id = id,
             nama = nama,
             kategori = kategori,
-            durasi = durasi
+            durasi = durasi,
+            tanggal = tanggal,
+            jam = jam
         )
         viewModelScope.launch(Dispatchers.IO) {
             dao.updateWorkout(workout)

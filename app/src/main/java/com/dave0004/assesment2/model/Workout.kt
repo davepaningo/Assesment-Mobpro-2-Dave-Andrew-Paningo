@@ -8,8 +8,9 @@ data class Workout(
 
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
-
     val nama: String,
     val kategori: String,
-    val durasi: String
+    val durasi: String,
+    val tanggal: String = "",
+    val jam: String = ""
 )

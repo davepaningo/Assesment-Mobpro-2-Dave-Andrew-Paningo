@@ -7,7 +7,7 @@ import com.dave0004.assesment2.model.Workout
 
 @Database(
     entities = [Workout::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class WorkoutDb : RoomDatabase() {
@@ -25,7 +25,8 @@ abstract class WorkoutDb : RoomDatabase() {
                     context.applicationContext,
                     WorkoutDb::class.java,
                     "workout.db"
-                ).build()
+                ).fallbackToDestructiveMigration()
+                    .build()
 
                 INSTANCE = instance
                 instance

@@ -3,11 +3,14 @@ package com.dave0004.assesment2.ui.theme.screen
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
+import androidx.appcompat.app.AlertDialog
+import androidx.benchmark.traceprocessor.Row
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -16,8 +19,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DividerDefaults
@@ -34,10 +39,17 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.TextButton
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -62,7 +74,21 @@ fun MainScreen(navController: NavHostController) {
 
     val dataStore = SettingsDataStore(LocalContext.current)
     val showList by dataStore.layoutFlow.collectAsState(true)
+    val selectedTheme by dataStore.themeFlow.collectAsState("Purple")
+    var showThemeDialog by remember { mutableStateOf(false) }
 
+    if (showThemeDialog) {
+        ThemePickerDialog(
+            selectedTheme = selectedTheme,
+            onThemeSelected = { theme ->
+                CoroutineScope(Dispatchers.IO).launch {
+                    dataStore.saveTheme(theme)
+                }
+                showThemeDialog = false
+            },
+            onDismiss = { showThemeDialog = false }
+        )
+    }
     Scaffold(
 
         topBar = {
@@ -79,6 +105,14 @@ fun MainScreen(navController: NavHostController) {
                 ),
 
                 actions = {
+
+                    IconButton(onClick = { showThemeDialog = true }) {
+                        Icon(
+                            imageVector = Icons.Filled.Palette,
+                            contentDescription = "Pilih Tema",
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
 
                     IconButton(
                         onClick = {
@@ -130,7 +164,50 @@ fun MainScreen(navController: NavHostController) {
         )
     }
 }
+@Composable
+fun ThemePickerDialog(
+    selectedTheme: String,
+    onThemeSelected: (String) -> Unit,
+    onDismiss: () -> Unit
+) {
+    val themes = listOf("Purple", "Blue", "Green", "Red")
 
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Pilih Tema") },
+        text = {
+            Column {
+                themes.forEach { theme ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .selectable(
+                                selected = (theme == selectedTheme),
+                                onClick = { onThemeSelected(theme) },
+                                role = Role.RadioButton
+                            )
+                            .padding(vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RadioButton(
+                            selected = (theme == selectedTheme),
+                            onClick = null
+                        )
+                        Text(
+                            text = theme,
+                            modifier = Modifier.padding(start = 16.dp)
+                        )
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Tutup")
+            }
+        }
+    )
+}
 @Composable
 fun ScreenContent(
     showList: Boolean,

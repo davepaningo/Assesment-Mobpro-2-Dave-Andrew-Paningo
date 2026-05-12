@@ -26,4 +26,5 @@ class SettingsDataStore(private val context: Context) {
             it[LAYOUT_KEY] = isList
         }
     }
+
 }

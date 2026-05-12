@@ -52,6 +52,7 @@ fun DetailScreen(
     id: Long? = null
 ) {
 
+
     val factory = ViewModelFactory(navController.context)
     val viewModel: DetailViewModel = viewModel(factory = factory)
 

@@ -25,7 +25,7 @@ abstract class WorkoutDb : RoomDatabase() {
                     context.applicationContext,
                     WorkoutDb::class.java,
                     "workout.db"
-                ).fallbackToDestructiveMigration()
+                )
                     .build()
 
                 INSTANCE = instance

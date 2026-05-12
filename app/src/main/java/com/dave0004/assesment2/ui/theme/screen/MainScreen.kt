@@ -3,8 +3,6 @@ package com.dave0004.assesment2.ui.theme.screen
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
-import androidx.appcompat.app.AlertDialog
-import androidx.benchmark.traceprocessor.Row
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement

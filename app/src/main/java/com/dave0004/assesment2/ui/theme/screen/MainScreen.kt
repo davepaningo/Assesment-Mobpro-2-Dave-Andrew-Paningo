@@ -253,7 +253,9 @@ fun ListItem(
             overflow = TextOverflow.Ellipsis
         )
 
-        Text(text = workout.durasi)
+        Text(text = "Durasi: ${workout.durasi} menit")
+        Text(text = "Tanggal: ${workout.tanggal}")
+        Text(text = "jam: ${workout.jam}")
     }
 }
 
@@ -301,7 +303,9 @@ fun GridItem(
                 overflow = TextOverflow.Ellipsis
             )
 
-            Text(text = workout.durasi)
+            Text(text = "Durasi: ${workout.durasi} menit")
+            Text(text = "Tanggal: ${workout.tanggal}")
+            Text(text = "Jam: ${workout.jam}")
         }
     }
 }

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
@@ -38,6 +39,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -69,6 +71,10 @@ fun DetailScreen(
     var durasi by remember {
         mutableStateOf("")
     }
+    var tanggal by remember { mutableStateOf("") }
+
+    var jam by remember { mutableStateOf("") }
+
 
     var showDialog by remember {
         mutableStateOf(false)
@@ -83,6 +89,8 @@ fun DetailScreen(
         nama = data.nama
         kategori = data.kategori
         durasi = data.durasi
+        tanggal = data.tanggal
+        jam = data.jam
     }
 
     Scaffold(
@@ -144,7 +152,9 @@ fun DetailScreen(
                                 viewModel.insert(
                                     nama,
                                     kategori,
-                                    durasi
+                                    durasi,
+                                    tanggal,
+                                    jam
                                 )
 
                             } else {
@@ -153,7 +163,9 @@ fun DetailScreen(
                                     id,
                                     nama,
                                     kategori,
-                                    durasi
+                                    durasi,
+                                    tanggal,
+                                    jam
                                 )
                             }
 
@@ -195,6 +207,8 @@ fun DetailScreen(
             onDurasiChange = {
                 durasi = it
             },
+            tanggal = tanggal, onTanggalChange = { tanggal = it },
+            jam = jam, onJamChange = { jam = it },
 
             modifier = Modifier.padding(padding)
         )
@@ -231,6 +245,12 @@ fun FormWorkout(
 
     durasi: String,
     onDurasiChange: (String) -> Unit,
+
+    tanggal: String,
+    onTanggalChange: (String) -> Unit,
+
+    jam: String,
+    onJamChange: (String) -> Unit,
 
     modifier: Modifier
 
@@ -306,11 +326,30 @@ fun FormWorkout(
         OutlinedTextField(
             value = durasi,
             onValueChange = {
-                onDurasiChange(it)
+                if (it.all { char -> char.isDigit() }) onDurasiChange(it)
             },
-            label = {
-                Text("Durasi")
+            label = { Text("Durasi (menit)") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), // ← angka
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        OutlinedTextField(
+            value = tanggal,
+            onValueChange = {
+                if (it.all { char -> char.isDigit() }) onTanggalChange(it)
             },
+            label = { Text("Tanggal") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), // ← angka
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        OutlinedTextField(
+            value = jam,
+            onValueChange = {
+                if (it.all { char -> char.isDigit() }) onJamChange(it)
+            },
+            label = { Text("Jam") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), // ← angka
             modifier = Modifier.fillMaxWidth()
         )
     }
